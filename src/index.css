@@ -14,8 +14,69 @@ body {
 main {
   margin-left: auto;
   margin-right: auto;
-  max-width: 800px;
-  height: 800px;
+  max-width: 600px;
   border-radius: 16px;
   background-color: #F5F5F5;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.title-text {
+  margin: 0;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -0.03em;
+}
+
+.instruction-text {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: normal;
+  color: #4A4E74;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.die-container {
+  margin-top: 42px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 34px;
+  row-gap: 34px;
+}
+
+.die {
+  width: 68px;
+  height: 68px;
+  border-radius: 7px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 38px;
+  line-height: 45px;
+  font-weight: 700;
+}
+
+.roll-btn {
+  width: 170px;
+  margin-top: 42px;
+  box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.18);
+  border: 0;
+  border-radius: 7px;
+  background-color: #5035FF;
+  padding: 10px;
+  color: white;
+  font-size: 30px;
+  font-family: "Karla", sans-serif;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.roll-btn:hover {
+  cursor: pointer;
 }
