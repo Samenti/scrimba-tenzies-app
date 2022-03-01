@@ -1,9 +1,11 @@
 import React from 'react';
 import {nanoid} from 'nanoid';
+import Confetti from 'react-confetti';
 import Die from './components/Die';
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
+  const [tenzies, setTenzies] = React.useState(false);
   
   function allNewDice() {
     let array = new Array();
@@ -45,8 +47,22 @@ export default function App() {
     }));
   }
 
+  function newGame() {
+    setDice(allNewDice());
+    setTenzies(false);
+  }
+
+  React.useEffect(() => {
+    const allHeld = dice.every(die => die.isHeld);
+    const allSame = dice.every(die => die.value === dice[0].value);
+    if (allHeld && allSame) {
+      setTenzies(true);
+    }
+  }, [dice]);
+
   return (
     <main className="container">
+      {tenzies && <Confetti />}
       <h1 className="title-text">Tenzies</h1>
       <p className="instruction-text">
         Roll until all dice are the same.
@@ -57,9 +73,9 @@ export default function App() {
       </div>
       <button 
         className="roll-btn noselect"
-        onClick={roll}
+        onClick={tenzies ? newGame : roll}
       >
-        Roll
+        {tenzies ? 'New Game' : 'Roll'}
       </button>
     </main>
   );
