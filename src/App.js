@@ -27,14 +27,17 @@ export default function App() {
     }));
   }
 
-  const diceElements = dice.map(obj => 
-    <Die 
-      key={obj.id}
-      face={obj.value}
-      isHeld={obj.isHeld}
-      hold={() => hold(obj.id)}
-    />
-  );
+  const diceElements = dice.map(obj => {
+    const clickFunc = tenzies ? () => {} : () => hold(obj.id);
+    return (
+      <Die 
+        key={obj.id}
+        face={obj.value}
+        isHeld={tenzies ? true : obj.isHeld}
+        hold={clickFunc}
+      />
+    );
+  });
 
   function roll() {
     setDice(prevDice => prevDice.map(die => {
@@ -53,9 +56,9 @@ export default function App() {
   }
 
   React.useEffect(() => {
-    const allHeld = dice.every(die => die.isHeld);
-    const allSame = dice.every(die => die.value === dice[0].value);
-    if (allHeld && allSame) {
+    if (dice.every(
+      die => die.value === dice[0].value
+    )) {
       setTenzies(true);
     }
   }, [dice]);
