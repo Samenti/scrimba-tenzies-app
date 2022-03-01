@@ -63,6 +63,10 @@ main {
   cursor: pointer;
 }
 
+.held-die {
+  background-color: #59E391;
+}
+
 .roll-btn {
   width: 170px;
   margin-top: 42px;

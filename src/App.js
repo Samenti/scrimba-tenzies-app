@@ -1,4 +1,5 @@
 import React from 'react';
+import {nanoid} from 'nanoid';
 import Die from './components/Die';
 
 export default function App() {
@@ -7,17 +8,29 @@ export default function App() {
   function allNewDice() {
     let array = new Array();
     for (let i = 0; i < 10; i++) {
-      array.push(Math.floor(Math.random() * 6) + 1);
+      array.push({
+        id: nanoid(),
+        value: Math.floor(Math.random() * 6) + 1,
+        isHeld: true
+      });
     }
     return array;
   }
 
   const diceElements = dice.map(
-    (value, index) => <Die key={index} face={value}/>
+    obj => <Die key={obj.id} face={obj.value} isHeld={obj.isHeld} />
   );
 
   function handleRollClick() {
-    setDice(allNewDice());
+    setDice(prevDice => prevDice.map(die => {
+      return(
+        die.isHeld ? die : {
+          id: die.id,
+          value: Math.floor(Math.random() * 6) + 1,
+          isHeld: false
+        }
+      );
+    }));
   }
 
   return (
