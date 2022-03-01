@@ -11,23 +11,35 @@ export default function App() {
       array.push({
         id: nanoid(),
         value: Math.floor(Math.random() * 6) + 1,
-        isHeld: true
+        isHeld: false
       });
     }
     return array;
   }
 
-  const diceElements = dice.map(
-    obj => <Die key={obj.id} face={obj.value} isHeld={obj.isHeld} />
+  function hold(id) {
+    setDice(prevDice => prevDice.map(die => {
+      return (
+        die.id === id ? {...die, isHeld: !die.isHeld} : die
+      );
+    }));
+  }
+
+  const diceElements = dice.map(obj => 
+    <Die 
+      key={obj.id}
+      face={obj.value}
+      isHeld={obj.isHeld}
+      hold={() => hold(obj.id)}
+    />
   );
 
-  function handleRollClick() {
+  function roll() {
     setDice(prevDice => prevDice.map(die => {
-      return(
+      return (
         die.isHeld ? die : {
-          id: die.id,
-          value: Math.floor(Math.random() * 6) + 1,
-          isHeld: false
+          ...die,
+          value: Math.floor(Math.random() * 6) + 1
         }
       );
     }));
@@ -44,8 +56,8 @@ export default function App() {
         {diceElements}
       </div>
       <button 
-        className="roll-btn"
-        onClick={handleRollClick}
+        className="roll-btn noselect"
+        onClick={roll}
       >
         Roll
       </button>
