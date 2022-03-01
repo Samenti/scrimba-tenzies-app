@@ -2,7 +2,14 @@ import React from 'react';
 import Die from './components/Die';
 
 export default function App() {
-  const dice = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  const [dice, setDice] = React.useState(allNewDice());
+  function allNewDice() {
+    let array = new Array();
+    for (let i = 0; i < 10; i++) {
+      array.push(Math.floor(Math.random() * 6) + 1);
+    }
+    return array;
+  }
   const diceElements = dice.map(
     (die, index) => <Die key={index} face={die}/>
   );

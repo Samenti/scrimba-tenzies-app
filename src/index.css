@@ -60,6 +60,7 @@ main {
   font-size: 38px;
   line-height: 45px;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .roll-btn {
@@ -75,8 +76,5 @@ main {
   font-family: "Karla", sans-serif;
   font-weight: 700;
   line-height: 36px;
-}
-
-.roll-btn:hover {
   cursor: pointer;
 }
