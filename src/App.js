@@ -1,11 +1,15 @@
 import React from 'react';
 import {nanoid} from 'nanoid';
+import {useStopwatch} from 'react-timer-hook';
 import Confetti from 'react-confetti';
 import Die from './components/Die';
+import Timer from './components/Timer';
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [score, setScore] = React.useState(0);
+  const stopWatch = useStopwatch({autoStart: false});
+  const [started, setStarted] = React.useState(false);
   const [tenzies, setTenzies] = React.useState(false);
   
   function allNewDice() {
@@ -21,6 +25,9 @@ export default function App() {
   }
 
   function hold(id) {
+    if (!started) {
+      setStarted(true);
+    }
     setDice(prevDice => prevDice.map(die => {
       return (
         die.id === id ? {...die, isHeld: !die.isHeld} : die
@@ -41,6 +48,9 @@ export default function App() {
   });
 
   function roll() {
+    if (!started) {
+      setStarted(true);
+    }
     setScore(prevScore => prevScore + 1);
     setDice(prevDice => prevDice.map(die => {
       return (
@@ -55,6 +65,8 @@ export default function App() {
   function newGame() {
     setDice(allNewDice());
     setTenzies(false);
+    setStarted(false);
+    stopWatch.reset(null, false);
     setScore(0);
   }
 
@@ -63,8 +75,12 @@ export default function App() {
       die => die.value === dice[0].value
     )) {
       setTenzies(true);
+      setStarted(false);
+      stopWatch.pause();
     }
-    console.log(score);
+    if (started && !stopWatch.isRunning) {
+      stopWatch.start();
+    }
   }, [dice]);
 
   return (
@@ -76,11 +92,21 @@ export default function App() {
         />
       }
       <h1 className="title-text">Tenzies</h1>
-      <p className="instruction-text">{
-        score > 0 ? `Rolls: ${score}` :
-        'Roll until all dice are the same.\
-        Click each die to freeze it at its current value between rolls.'
-      }</p>
+      {started || tenzies
+        ? 
+        <p className="instruction-text">
+          {`Rolls: ${score}`}
+          <Timer 
+            secs={stopWatch.seconds}
+            mins={stopWatch.minutes}
+          />
+        </p> 
+        : 
+        <p className="instruction-text">
+          Roll until all dice are the same.
+          Click each die to freeze it at its current value between rolls.
+        </p>
+      }
       <div className="die-container">
         {diceElements}
       </div>
