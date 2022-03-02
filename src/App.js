@@ -5,6 +5,7 @@ import Die from './components/Die';
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
+  const [score, setScore] = React.useState(0);
   const [tenzies, setTenzies] = React.useState(false);
   
   function allNewDice() {
@@ -40,6 +41,7 @@ export default function App() {
   });
 
   function roll() {
+    setScore(prevScore => prevScore + 1);
     setDice(prevDice => prevDice.map(die => {
       return (
         die.isHeld ? die : {
@@ -53,6 +55,7 @@ export default function App() {
   function newGame() {
     setDice(allNewDice());
     setTenzies(false);
+    setScore(0);
   }
 
   React.useEffect(() => {
@@ -61,16 +64,23 @@ export default function App() {
     )) {
       setTenzies(true);
     }
+    console.log(score);
   }, [dice]);
 
   return (
     <main className="container">
-      {tenzies && <Confetti />}
+      {tenzies && 
+        <Confetti 
+          width={window.innerWidth - 2}
+          height={window.innerHeight - 2}
+        />
+      }
       <h1 className="title-text">Tenzies</h1>
-      <p className="instruction-text">
-        Roll until all dice are the same.
-        Click each die to freeze it at its current value between rolls.
-      </p>
+      <p className="instruction-text">{
+        score > 0 ? `Rolls: ${score}` :
+        'Roll until all dice are the same.\
+        Click each die to freeze it at its current value between rolls.'
+      }</p>
       <div className="die-container">
         {diceElements}
       </div>
