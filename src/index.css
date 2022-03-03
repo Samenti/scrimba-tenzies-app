@@ -58,18 +58,115 @@ main {
   border-radius: 7px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   background-color: white;
+  padding: 7px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 38px;
-  line-height: 45px;
-  font-weight: 700;
   cursor: pointer;
 }
 
 .held-die {
   background-color: #59E391;
 }
+
+/*** This part defines the six die faces ***/
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.face-1 {
+  justify-content: center;
+  align-items: center;
+}
+
+.face-2, .face-3, .face-4, .face-6 {
+  justify-content: space-between;
+}
+
+.face-2 .dot:nth-of-type(2) {
+  align-self: flex-end;
+}
+
+.face-3 {
+  flex-direction: row-reverse;
+}
+
+.face-3 .dot:nth-of-type(2) {
+  align-self: center;
+}
+
+.face-3 .dot:nth-of-type(3) {
+  align-self: flex-end;
+}
+
+.face-4, .face-6 {
+  flex-wrap: wrap;
+  column-gap: 10px;
+}
+
+.face-4 .dot:nth-of-type(3) {
+  align-self: flex-end;
+}
+
+.face-4 .dot:nth-of-type(4) {
+  align-self: flex-end;
+}
+
+.face-5 {
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  justify-content: space-between;
+  align-items: space-between;
+}
+
+.face-5 .dot:nth-of-type(1) {
+  grid-column-start: 1;
+  grid-row-start: 1;
+}
+
+.face-5 .dot:nth-of-type(2) {
+  grid-column-start: 3;
+  grid-row-start: 1;
+  justify-self: end;
+}
+
+.face-5 .dot:nth-of-type(3) {
+  grid-column-start: 2;
+  grid-row-start: 2;
+  justify-self: center;
+  align-self: center;
+}
+
+.face-5 .dot:nth-of-type(4) {
+  grid-column-start: 1;
+  grid-row-start: 3;
+  align-self: end;
+}
+
+.face-5 .dot:nth-of-type(5) {
+  grid-column-start: 3;
+  grid-row-start: 3;
+  justify-self: end;
+  align-self: end;
+}
+
+.face-6 .dot:nth-of-type(3) {
+  align-self: center;
+}
+
+.face-6 .dot:nth-of-type(4) {
+  align-self: center;
+}
+
+.face-6 .dot:nth-of-type(5) {
+  align-self: flex-end;
+}
+
+.face-6 .dot:nth-of-type(6) {
+  align-self: flex-end;
+}
+/*** end of die face definitions ***/
 
 .roll-btn {
   width: 170px;
