@@ -11,6 +11,10 @@ export default function App() {
   const stopWatch = useStopwatch({autoStart: false});
   const [started, setStarted] = React.useState(false);
   const [tenzies, setTenzies] = React.useState(false);
+  const [results, setResults] = React.useState(
+    {rolls: 99999, time: 99999}
+  );
+  const [highScore, setHighScore] = React.useState(loadHighScore());
   
   function allNewDice() {
     let array = new Array();
@@ -22,6 +26,17 @@ export default function App() {
       });
     }
     return array;
+  }
+
+  function loadHighScore() {
+    const storageValues = JSON.parse(
+      window.localStorage.getItem("highscore")
+    );
+    if (storageValues) {
+      return storageValues;
+    } else {
+      return results;
+    }
   }
 
   function hold(id) {
@@ -68,20 +83,49 @@ export default function App() {
     setStarted(false);
     stopWatch.reset(null, false);
     setScore(0);
+    setResults(
+      {rolls: 99999, time: 99999}
+    );
   }
 
   React.useEffect(() => {
     if (dice.every(
       die => die.value === dice[0].value
     )) {
+      stopWatch.pause();
+      const time = (
+        stopWatch.days * 86400 + stopWatch.hours * 3600 
+        + stopWatch.minutes * 60 + stopWatch.seconds
+      );
+      setResults({rolls: score, time: time});
       setTenzies(true);
       setStarted(false);
-      stopWatch.pause();
     }
     if (started && !stopWatch.isRunning) {
       stopWatch.start();
     }
   }, [dice]);
+
+  React.useEffect(() => {
+    setHighScore(prevHighScore => {
+      const newHighScore = (
+        prevHighScore.time >= results.time
+        ?
+        {rolls: results.rolls, time: results.time}
+        :
+        {rolls: prevHighScore.rolls, time: prevHighScore.time}
+      );
+      window.localStorage.setItem(
+        'highscore', JSON.stringify(newHighScore)
+      );
+      document.title = (
+        `*Tenzies* Best Time: \
+        ${newHighScore.time === 99999 ? '∞' : newHighScore.time} \
+        Rolls: ${newHighScore.rolls === 99999 ? '∞' : newHighScore.rolls}`
+      );
+      return newHighScore;
+    });
+  }, [tenzies]);
 
   return (
     <main className="container">
